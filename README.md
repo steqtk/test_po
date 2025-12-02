@@ -1,2 +1,2 @@
-user - admin
-pass - amin123
+- user - admin
+- pass - admin123
