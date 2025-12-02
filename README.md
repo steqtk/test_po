@@ -1,60 +1,190 @@
-<p align="center">
-    <a href="https://github.com/yiisoft" target="_blank">
-        <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
-    </a>
-    <h1 align="center">Yii 2 Advanced Project Template</h1>
-    <br>
-</p>
+# 🍎 Apple Management System
 
-Yii 2 Advanced Project Template is a skeleton [Yii 2](https://www.yiiframework.com/) application best for
-developing complex Web applications with multiple tiers.
+Система управления яблоками на базе Yii2 Advanced Template. Реализует полный функционал работы с объектами "Яблоко" с использованием ООП парадигмы и хранением данных в MySQL.
 
-The template includes three tiers: front end, back end, and console, each of which
-is a separate Yii application.
+## 📋 Описание проекта
 
-The template is designed to work in a team development environment. It supports
-deploying the application in different environments.
+Проект реализует закрытую систему управления яблоками в backend-приложении Yii2 Framework со следующими возможностями:
 
-Documentation is at [docs/guide/README.md](docs/guide/README.md).
+### Функции объекта Apple:
+- **Упасть с дерева** - изменение статуса с "на дереве" на "на земле"
+- **Съесть** - откусывание указанного процента от яблока
+- **Автоудаление** - при полном съедении (100%)
 
-[![Latest Stable Version](https://img.shields.io/packagist/v/yiisoft/yii2-app-advanced.svg)](https://packagist.org/packages/yiisoft/yii2-app-advanced)
-[![Total Downloads](https://img.shields.io/packagist/dt/yiisoft/yii2-app-advanced.svg)](https://packagist.org/packages/yiisoft/yii2-app-advanced)
-[![build](https://github.com/yiisoft/yii2-app-advanced/workflows/build/badge.svg)](https://github.com/yiisoft/yii2-app-advanced/actions?query=workflow%3Abuild)
+### Переменные объекта:
+- **color** - цвет яблока (red/green/yellow), устанавливается случайно при создании
+- **created_at** - дата появления (случайный unix timestamp)
+- **fell_at** - дата падения с дерева (устанавливается при падении)
+- **status** - текущий статус (on_tree/on_ground/rotten)
+- **eaten_percent** - процент съеденной части
 
-DIRECTORY STRUCTURE
--------------------
+### Состояния яблока:
+1. **Висит на дереве** (on_tree) - начальное состояние
+2. **Лежит на земле** (on_ground) - после падения
+3. **Гнилое** (rotten) - после 5 часов на земле
 
+### Бизнес-правила:
+- ✅ Пока висит на дереве - испортиться не может
+- ❌ Когда висит на дереве - съесть не получится
+- ⏱️ После лежания 5 часов - автоматически портится
+- ❌ Когда испорчено - съесть не получится
+- 🗑️ Когда съедено на 100% - удаляется из БД
+
+## 🚀 Установка
+
+### Требования
+- PHP 7.4+
+- MySQL 5.7+
+- Composer
+- DDEV (для локальной разработки)
+
+### Шаги установки
+
+1. Клонировать репозиторий:
+```bash
+git clone <repository-url>
+cd test_po
 ```
-common
-    config/              contains shared configurations
-    mail/                contains view files for e-mails
-    models/              contains model classes used in both backend and frontend
-    tests/               contains tests for common classes    
-console
-    config/              contains console configurations
-    controllers/         contains console controllers (commands)
-    migrations/          contains database migrations
-    models/              contains console-specific model classes
-    runtime/             contains files generated during runtime
-backend
-    assets/              contains application assets such as JavaScript and CSS
-    config/              contains backend configurations
-    controllers/         contains Web controller classes
-    models/              contains backend-specific model classes
-    runtime/             contains files generated during runtime
-    tests/               contains tests for backend application    
-    views/               contains view files for the Web application
-    web/                 contains the entry script and Web resources
-frontend
-    assets/              contains application assets such as JavaScript and CSS
-    config/              contains frontend configurations
-    controllers/         contains Web controller classes
-    models/              contains frontend-specific model classes
-    runtime/             contains files generated during runtime
-    tests/               contains tests for frontend application
-    views/               contains view files for the Web application
-    web/                 contains the entry script and Web resources
-    widgets/             contains frontend widgets
-vendor/                  contains dependent 3rd-party packages
-environments/            contains environment-based overrides
+
+2. Установить зависимости через DDEV:
+```bash
+ddev composer install
 ```
+
+3. Инициализировать Yii2 Advanced Template:
+```bash
+php init --env=Development
+```
+
+4. Настроить подключение к БД в `common/config/main-local.php`:
+```php
+'db' => [
+    'class' => \yii\db\Connection::class,
+    'dsn' => 'mysql:host=db;dbname=db',
+    'username' => 'db',
+    'password' => 'db',
+    'charset' => 'utf8mb4',
+],
+```
+
+5. Применить миграции:
+```bash
+ddev exec php yii migrate
+```
+
+6. Запустить проект:
+```bash
+ddev start
+```
+
+## 🔐 Авторизация
+
+Backend доступен только авторизованным пользователям.
+
+**Данные для входа:**
+- **Логин:** admin
+- **Пароль:** admin123
+
+## 📖 Использование
+
+### Главная страница
+После авторизации вы попадете на главную страницу с информацией о системе.
+
+### Управление яблоками
+Перейдите в раздел "🍎 Яблоки" для работы с яблоками.
+
+**Доступные операции:**
+- **Сгенерировать яблоки** - создает от 5 до 20 случайных яблок
+- **Упасть** - яблоко падает с дерева на землю (только для яблок на дереве)
+- **Съесть %** - откусить указанный процент (только для яблок на земле, не гнилых)
+- **Удалить** - удалить яблоко вручную
+
+### Пример работы с объектом в коде:
+
+```php
+$apple = new Apple();
+$apple->color = 'green';
+$apple->save();
+
+echo $apple->color; // green
+
+$apple->eat(50); // Бросит исключение - Съесть нельзя, яблоко на дереве
+
+echo $apple->getSize(); // 1.00 - decimal
+
+$apple->fallToGround(); // упасть на землю
+
+$apple->eat(25); // откусить четверть яблока
+
+echo $apple->getSize(); // 0.75
+```
+
+## 🏗️ Архитектура
+
+### Структура БД
+**Таблица `apple`:**
+- `id` - PRIMARY KEY
+- `color` - VARCHAR(50), цвет яблока
+- `created_at` - INT, дата появления (unix timestamp)
+- `fell_at` - INT NULL, дата падения
+- `status` - ENUM('on_tree', 'on_ground', 'rotten')
+- `eaten_percent` - DECIMAL(5,2), процент съеденной части
+
+### ООП реализация
+Класс `Apple` (common/models/Apple.php) наследуется от `yii\db\ActiveRecord` и содержит:
+
+**Методы:**
+- `createRandom()` - статический метод создания яблока со случайным цветом
+- `fallToGround()` - падение с дерева
+- `eat($percent)` - съесть процент яблока
+- `updateStatus()` - обновление статуса (проверка на гниение)
+- `getSize()` - получение размера яблока (1 = целое, 0 = съедено)
+- `getStatusName()` - название статуса на русском
+- `getEmoji()` - эмодзи яблока в зависимости от цвета
+
+**Валидация:**
+- Проверка состояния перед операциями (нельзя есть на дереве, нельзя есть гнилое)
+- Автоматическое гниение через 5 часов
+- Автоудаление при 100% съедении
+
+## 🎨 Особенности реализации
+
+1. **Случайная дата создания** - каждое яблоко получает случайный timestamp в прошлом (до 30 дней)
+2. **Визуальное представление** - цветные карточки с прогресс-барами
+3. **Защита от ошибок** - все операции валидируются с выбросом исключений
+4. **Автоматическое обновление статусов** - при каждом просмотре списка
+5. **AJAX не требуется** - простой POST-формы для всех операций
+
+## 📝 Коммиты
+
+История разработки сохранена в git с последовательными коммитами:
+1. Initial commit: Install Yii2 Advanced Template
+2. Configure database and create apple table migration
+3. Create Apple model with full business logic
+4. Add admin user for backend authentication
+5. Create Apple controller and views
+
+## 🧪 Тестирование
+
+Для тестирования функционала:
+1. Залогиньтесь в backend (admin/admin123)
+2. Перейдите в раздел "Яблоки"
+3. Сгенерируйте яблоки кнопкой
+4. Попробуйте различные операции:
+   - Попытка съесть яблоко на дереве (будет ошибка)
+   - Падение яблока с дерева
+   - Откусывание процента
+   - Полное съедение (яблоко удалится)
+
+## 👨‍💻 Автор
+
+Проект создан как тестовое задание, демонстрирующее:
+- Знание Yii2 Framework
+- ООП парадигму
+- Работу с БД через ActiveRecord
+- MVC архитектуру
+- Git workflow
+
+## 📄 Лицензия
+
+Проект создан в образовательных целях.

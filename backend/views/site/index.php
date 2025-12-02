@@ -2,50 +2,60 @@
 
 /** @var yii\web\View $this */
 
-$this->title = 'My Yii Application';
+use yii\helpers\Html;
+
+$this->title = 'Apple Management System';
 ?>
 <div class="site-index">
 
-    <div class="jumbotron text-center bg-transparent">
-        <h1 class="display-4">Congratulations!</h1>
+    <div class="jumbotron text-center bg-transparent mt-5">
+        <h1 class="display-4">🍎 Система управления яблоками 🍏</h1>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+        <p class="lead">Добро пожаловать в систему управления яблоками на базе Yii2 Framework</p>
 
-        <p><a class="btn btn-lg btn-success" href="https://www.yiiframework.com">Get started with Yii</a></p>
+        <p class="mt-4">
+            <?= Html::a('🍎 Перейти к управлению яблоками', ['/apple/index'], ['class' => 'btn btn-lg btn-success']) ?>
+        </p>
     </div>
 
-    <div class="body-content">
+    <div class="body-content mt-5">
 
         <div class="row">
             <div class="col-lg-4">
-                <h2>Heading</h2>
+                <h2>📝 Функционал</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                <ul>
+                    <li>Генерация случайных яблок</li>
+                    <li>Падение яблока с дерева</li>
+                    <li>Откусывание процента яблока</li>
+                    <li>Автоматическое гниение через 5 часов</li>
+                    <li>Автоудаление съеденных яблок</li>
+                </ul>
 
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+                <p><?= Html::a('Управление яблоками &raquo;', ['/apple/index'], ['class' => 'btn btn-outline-secondary']) ?></p>
             </div>
             <div class="col-lg-4">
-                <h2>Heading</h2>
+                <h2>🎨 Возможности</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                <ul>
+                    <li>Три цвета яблок: красный, зеленый, желтый</li>
+                    <li>Три статуса: на дереве, на земле, гнилое</li>
+                    <li>Случайная дата появления яблока</li>
+                    <li>Визуальное отображение размера</li>
+                    <li>Защита от некорректных операций</li>
+                </ul>
 
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
+                <p><?= Html::a('ООП парадигма &raquo;', 'https://github.com', ['class' => 'btn btn-outline-secondary', 'target' => '_blank']) ?></p>
             </div>
             <div class="col-lg-4">
-                <h2>Heading</h2>
+                <h2>🔐 Информация</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                <p><strong>Логин:</strong> admin<br>
+                <strong>Пароль:</strong> admin123</p>
 
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+                <p>Система использует простую авторизацию. Доступ к управлению яблоками имеют только авторизованные пользователи.</p>
+
+                <p><?= Html::a('GitHub Repository &raquo;', '#', ['class' => 'btn btn-outline-secondary']) ?></p>
             </div>
         </div>
 
